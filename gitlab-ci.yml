@@ -1,0 +1,425 @@
+image: python:3.9
+
+stages:
+  - build
+
+  # analysis
+  - sonar_analysis
+  - check_lint
+
+  # functional_test
+  - unit_test
+  - integration_test
+  - ui_test
+  - regression_test
+  - compatibility_test
+  - smoke_test
+  - recovery_test
+  - migration_test
+  - reliability_test
+  - globalization_localization_test
+  - black_box_test
+  - white_box_test
+  - system_test
+  - acceptance_test
+  - api_test
+  - performance_test
+  - scalability_test
+  - endurance_test
+  - load_test
+  - stress_test
+  - security_test
+  - accessibility_test
+
+  # nonfunctional_test
+
+  - docker_build # test
+  - push_to_nexus # test
+  - deploy # test
+
+  # if Quality Assurance (QA) test is OK 
+  # docker_build product
+  # push to nexus product
+  # deploy product
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Build
+build_job_python:
+  stage: build
+  script:
+    # - python -m venv venv
+    # - source venv/bin/activate
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+    - pip install pytest pytest-cov selenium locust pylint newman requests
+  artifacts:
+    paths:
+      - .venv/
+
+build_job_php:
+  stage: build
+  image: php:7.4
+  script:
+    - apt-get update && apt-get install -y unzip zip curl
+    - curl -sS https://getcomposer.org/installer | php
+    - php composer.phar install
+  artifacts:
+    paths:
+      - vendor/
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# اجرای تحلیل کد با SonarQube
+sonar_analysis:
+  stage: sonar_analysis
+  image: sonarsource/sonar-scanner-cli:latest
+  script:
+    - sonar-scanner -Dsonar.projectKey=your_project_key \
+                   -Dsonar.sources=. \
+                   -Dsonar.host.url=http://your_sonarqube_server:9000 \
+                   -Dsonar.login=$SONAR_TOKEN
+  only:
+    - main  # فقط در شاخه main اجرا شود
+
+  # sonar.projectKey: کلید پروژه‌ای که در SonarQube ایجاد شده
+  # sonar.sources: مسیری که کدهای منبع در آن قرار دارند. در اینجا به صورت . تنظیم شده تا کل پروژه را شامل شود
+  # sonar.host.url: آدرس سرور SonarQube
+  # sonar.login: توکن ورود به SonarQube که باید به عنوان متغیر محیطی (SONAR_TOKEN) در GitLab تنظیم شود
+  # GitLab > Settings > CI / CD > Variables > Add SONAR_TOKEN whit token value
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Check Lint || Pylint
+lint_test:
+  stage: check_lint
+  script:
+    - pylint tests/ api/ > pylint_results.txt || exit 0 
+    # pylint کدهای موجود در دایرکتوری‌های tests/ و api/ را بررسی کرده و خروجی خود را در فایلی به نام pylint_results.txt ذخیره می‌کند.
+    # از آنجایی که Pylint در صورت پیدا کردن مشکلات کد مقدار بازگشتی غیر صفر برمی‌گرداند، از دستور || exit 0 استفاده شده تا پایپ‌لاین در صورت وجود هشدارها متوقف نشود.
+  artifacts:
+    when: always
+    paths:
+      - pylint_results.txt
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Unit Test || تست واحد معمولاً در هر پروژه‌ای اجرا می‌شود تا اطمینان حاصل شود که اجزای کوچکی از کد درست کار می‌کنند
+unit_test_job_python:
+  stage: unit_test
+  script:
+    - python -m pytest tests/unit > unit_test_results.txt || exit 0
+  artifacts:
+    when: always
+    paths:
+      - unit_test_results.txt
+
+# unit_test_job_python:
+#   stage: unit_test
+#   script:
+#     - python -m pytest --junitxml=unit_test_results.xml --cov=my_python_project
+#   artifacts:
+#     reports:
+#       junit: unit_test_results.xml
+#     paths:
+#       - htmlcov/
+
+unit_test_job_php:
+  stage: unit_test
+  image: php:8.1
+  script:
+    - ./vendor/bin/phpunit --log-junit unit_test_results.xml
+  artifacts:
+    reports:
+      junit: unit_test_results.xml
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Integration Test || تست های یکپارچگی برای بررسی تعامل بین ماژول‌های مختلف به‌کار می‌روند || Apache Camel Test Kit, TestNG، JUnit
+integration_test_job_python:
+  stage: integration_test
+  script:
+    - python -m pytest tests/integration --junitxml=integration_test_results.xml
+  artifacts:
+    reports:
+      junit: integration_test_results.xml
+
+integration_test_job_php:
+  stage: integration_test
+  script:
+    - ./vendor/bin/phpunit --testsuite integration --log-junit integration_test_results.xml
+  artifacts:
+    reports:
+      junit: integration_test_results.xml
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# User Interface Test (Selenium) || این تست‌ها برای این تا اطمینان حاصل شود که رابط کاربری به‌درستی کار می‌کند || Cypress، Puppeteer
+ui_test_job:
+  stage: ui_test
+  image: selenium/standalone-chrome
+  services:
+    - selenium/standalone-chrome
+  script:
+    - python -m pytest tests/ui --junitxml=ui_test_results.xml
+  artifacts:
+    reports:
+      junit: ui_test_results.xml
+    paths:
+      - screenshots/
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Regression Test (Selenium) || تست مجدد بخش‌هایی از نرم‌افزار برای اطمینان از اینکه تغییرات جدید باعث ایجاد باگ‌های جدید نشده است || Cypress
+regression_test_job:
+  stage: regression_test
+  image: selenium/standalone-chrome
+  services:
+    - selenium/standalone-chrome
+  script:
+    - python -m pytest tests/regression --junitxml=regression_test_results.xml
+  artifacts:
+    when: always
+    reports:
+      junit: regression_test_results.xml
+    paths:
+      - regression_test_results.xml
+
+  # stage: regression_test
+  # image: cypress/browsers:node12.18.3-chrome87-ff82
+  # script:
+  #   - npm install
+  #   - npm run cypress:run
+  # artifacts:
+  #   paths:
+  #     - cypress/screenshots
+  #     - cypress/videos
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Compatibility Test (Selenium) ||  برای تست سازگاری نرم‌افزار در مرورگرها و دستگاه‌های مختلف استفاده می شود || BrowserStack
+compatibility_test_job:
+  stage: compatibility_test
+  image: selenium/standalone-chrome
+  script:
+    - python -m pytest tests/compatibility --junitxml=compatibility_test_results.xml
+  artifacts:
+    reports:
+      junit: compatibility_test_results.xml
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Smoke Test || تست دودی که تست‌های سطحی برای بررسی سلامت کلی سیستم است || Cypress، Selenium
+smoke_test_job:
+  stage: smoke_test
+  script:
+    - python -m pytest tests/smoke --junitxml=smoke_test_results.xml
+  artifacts:
+    reports:
+      junit: smoke_test_results.xml
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Recovery Test || برای تست بازیابی سیستم‌ها || Chaos Monkey
+recovery_test_job:
+  stage: recovery_test
+  script:
+    - python -m pytest tests/recovery --junitxml=recovery_test_results.xml
+  artifacts:
+    reports:
+      junit: recovery_test_results.xml
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Migration Test || برای مهاجرت دیتابیس‌ها || Flyway
+migration_test_job:
+  stage: migration_test
+  script:
+    - python -m pytest tests/migration --junitxml=migration_test_results.xml
+  artifacts:
+    reports:
+      junit: migration_test_results.xml
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Reliability Test || تست قابلیت اطمینان  || Chaos Monkey
+reliability_test_job:
+  stage: reliability_test
+  script:
+    - python -m pytest tests/reliability --junitxml=reliability_test_results.xml
+  artifacts:
+    reports:
+      junit: reliability_test_results.xml
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Globalization and Localization Test || تست جهانی‌سازی و بومی‌سازی || Globalyzer
+globalization_localization_test_job:
+  stage: globalization_localization_test
+  script:
+    - python -m pytest tests/globalization_localization --junitxml=globalization_localization_test_results.xml
+  artifacts:
+    reports:
+      junit: globalization_localization_test_results.xml
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Black Box Test || تست بدون توجه به ساختار داخلی کد و با تمرکز بر عملکرد نرم‌افزار از دید کاربر || TestNG
+black_box_test_job:
+  stage: black_box_test
+  script:
+    - python -m pytest tests/black_box --junitxml=black_box_test_results.xml
+  artifacts:
+    reports:
+      junit: black_box_test_results.xml
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# White Box Test || تست با دانستن ساختار داخلی کد و بررسی دقیق نحوه عملکرد داخلی نرم‌افزار || JUnit، TestNG
+white_box_test_job:
+  stage: white_box_test
+  script:
+    - python -m pytest --cov=my_python_project tests/white_box --junitxml=white_box_test_results.xml
+  artifacts:
+    reports:
+      junit: white_box_test_results.xml
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# System Test || تست کل سیستم به عنوان یک واحد کامل پس از ادغام تمام ماژول‌ها || Robot Framework
+system_test_job:
+  stage: system_test
+  script:
+    - python -m pytest tests/system --junitxml=system_test_results.xml
+  artifacts:
+    reports:
+      junit: system_test_results.xml
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Acceptance Test || تست نهایی توسط کاربر یا مشتری برای اطمینان از اینکه نرم‌افزار مطابق با نیازها است || FitNesse, Cucumber، Robot Framework
+acceptance_test_job:
+  stage: acceptance_test
+  script:
+    - python -m pytest tests/acceptance --junitxml=acceptance_test_results.xml
+  artifacts:
+    reports:
+      junit: acceptance_test_results.xml
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# API Test || تست میکروسرویس ها || RestAssured، SoapUI, Postman & Newman
+api_test_job:
+  stage: api_test
+  script:
+    - python -m pytest tests/api --junitxml=api_test_results.xml
+  artifacts:
+    reports:
+      junit: api_test_results.xml
+
+  # image: postman/newman:alpine
+  # script:
+  #   - newman run api_tests_collection.json -e environment.json
+  # artifacts:
+  #   paths:
+  #     - newman/
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Performance Test (Locust) || بررسی سرعت، پاسخگویی و پایداری نرم‌افزار در شرایط مختلف || Apache JMeter، Gatling
+performance_test_job:
+  stage: performance_test
+  script:
+    - locust -f test/performance/test_performance.py --headless -u 100 -r 10 --run-time 1m --csv=performance_results
+  artifacts:
+    paths:
+      - performance_results/
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Scalability Test (Locust) || ارزیابی اینکه چگونه سیستم با افزایش تدریجی تعداد کاربران یا درخواست‌ها سازگار می‌شود، انجام می‌شود || Apache JMeter
+scalability_test_job:
+  stage: scalability_test
+  script:
+    - locust -f test/scalability/test_scalability.py --headless -u 1000 -r 100 --run-time 10m --csv=scalability_results
+  artifacts:
+    paths:
+      - scalability_results/
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Endurance Test (Locust) || این تست نشان می‌دهد که آیا سیستم تحت بارهای مداوم و طولانی به درستی عمل می‌کند یا خیر || Apache JMeter
+endurance_test_job:
+  stage: endurance_test
+  script:
+    - locust -f test/endurance/test_endurance.py --headless -u 500 -r 50 --run-time 12h --csv=endurance_results
+  artifacts:
+    paths:
+      - endurance_results/
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Load Test (Locust) || سیستم در چه مقدار بار به درستی عمل می‌کند || Apache JMeter
+load_test_job:
+  stage: load_test
+  script:
+    - locust -f test/load/test_load.py --headless -u 500 -r 50 --run-time 1h --csv=load_test_results
+  artifacts:
+    paths:
+      - load_test_results/
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Stress Test (Locust) || برای بررسی میزان تحمل سیستم در برابر بارهای سنگین و فراتر از ظرفیت معمول استفاده می‌شود. هدف این تست بررسی نقطه‌ی شکست سیستم است || Apache JMeter
+stress_test_job:
+  stage: stress_test
+  script:
+    - locust -f test/stress/test_stress.py --headless -u 1000 -r 200 --run-time 30m --csv=stress_test_results
+  artifacts:
+    paths:
+      - stress_test_results/
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Security Test (OWASP ZAP) || ابزارهای تست امنیتی می‌توانند برای بررسی آسیب‌پذیری‌های امنیتی استفاده شوند || Arachni
+security_test_job:
+  stage: security_test
+  image: owasp/zap2docker-stable
+  script:
+    - python3 zap-baseline.py
+  artifacts:
+    when: always
+    paths:
+      - zap_baseline_report.html
+  allow_failure: true  # اگر تست امنیتی شکست خورد، مرحله‌های دیگر ادامه پیدا کنند
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Accessibility Test || تست قابلیت دسترسی || axe-core
+accessibility_test_job:
+  stage: accessibility_test
+  image: node:latest
+  script:
+    - npm install -g pa11y
+    - pa11y http://your-app-url > accessibility_report.txt
+  artifacts:
+    paths:
+      - accessibility_report.txt
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# مرحله Docker Build
+docker_build_job:
+  stage: docker_build
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build -t my_project:$CI_COMMIT_SHORT_SHA .
+    - docker tag my_project:$CI_COMMIT_SHORT_SHA nexus.example.com/repository/docker-hosted/my_project:$CI_COMMIT_SHORT_SHA
+  artifacts:
+    paths:
+      - docker/
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# مرحله Push to Nexus
+push_to_nexus_job:
+  stage: push_to_nexus
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker push nexus.example.com/repository/docker-hosted/my_project:$CI_COMMIT_SHORT_SHA
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# مرحله Deploy به سرور با Docker Compose
+deploy_job:
+  stage: deploy
+  image: docker/compose:latest
+  environment:
+    name: production
+    url: http://your-server-url
+  script:
+    - scp -o StrictHostKeyChecking=no docker-compose.yml user@your-server:/path/to/docker-compose.yml
+    - ssh user@your-server "cd /path/to && docker-compose pull && docker-compose up -d"
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
