@@ -102,4 +102,4 @@ GitOps یک مدل عملیاتی است که اصول CI/CD را برای مد�
 [1.z04]: https://raw.githubusercontent.com/samadelmakchi/samadelmakchi/main/flag/fa.svg (فارسی)
 
 ### Translate
-[![1.z01]][z01] [![1.z02]][z02] [![1.z03]][z03] 
+[![1.z01]][z01] [![1.z03]][z03] [![1.z02]][z02] 
