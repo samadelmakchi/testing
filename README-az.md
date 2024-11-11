@@ -1,90 +1,104 @@
-# What is CI/CD?
-CI/CD stands for Continuous Integration and Continuous Delivery (or Continuous Deployment). It is a set of practices and principles in software development aimed at improving the workflow of development and delivering software with higher quality and faster delivery times.
+# CI/CD Nedir?
+CI/CD, Sürekli Entegrasyon (Continuous Integration) ve Sürekli Dağıtım (Continuous Delivery) veya Sürekli Yayınlama (Continuous Deployment) anlamına gelir. Bu, yazılım geliştirmede daha yüksek kaliteli yazılımlar ve daha hızlı teslimat süreleri sağlamak amacıyla geliştirme iş akışını iyileştirmeye yönelik uygulamalar ve ilkelere dayalı bir yaklaşımdır.
 
-### Continuous Integration (CI):
-CI refers to the automatic integration of code changes from multiple contributors into a shared repository, which is done multiple times a day. Each change is automatically built, tested, and verified, helping to identify issues early in the development cycle.
+### Sürekli Entegrasyon (CI):
+CI, birden fazla katkıcının yaptığı kod değişikliklerinin, günde birden fazla kez otomatik olarak paylaşılan bir depoya entegre edilmesidir. Her değişiklik, otomatik olarak derlenir, test edilir ve doğrulanır, bu da gelişim döngüsünün erken aşamalarında sorunları hızlıca tespit etmeye yardımcı olur.
 
-### Continuous Delivery (CD):
-CD is the automated process that prepares the code for release. It ensures that the code is always in a deployable state and can be transferred to production at any time. This process includes automated testing and staging to ensure quality and stability before release.
+### Sürekli Dağıtım (CD):
+CD, kodu üretime hazırlama sürecini otomatikleştiren bir işlemdir. Kodun her zaman dağıtıma hazır bir durumda olmasını sağlar ve her an üretime aktarılabilmesini garanti eder. Bu süreç, kalite ve kararlılığı sağlamak için otomatik testler ve aşama içerir.
 
-### Continuous Deployment (CD):
-This is an advanced stage of CI/CD, where any change that successfully passes automated tests is deployed to production without manual intervention. This approach is particularly used in agile and DevOps environments for faster and more frequent releases of features and fixes.
+### Sürekli Yayınlama (CD):
+CI/CD'nin daha ileri bir aşamasıdır. Burada, başarılı bir şekilde otomatik testlerden geçen herhangi bir değişiklik, manuel müdahale olmadan üretime aktarılır. Bu yaklaşım, çevik ve DevOps ortamlarında, özelliklerin ve düzeltmelerin daha hızlı ve sık bir şekilde yayımlanmasını sağlar.
 
 [img1]: cicd.webp (CI/CD)
 ![img1]
 
 ----
 
-# Why Use CI/CD?
-### Faster Development Cycle:
-By automating repetitive tasks such as testing and deployment, CI/CD allows developers to focus more on writing code and spend less time on manual processes. This results in faster fixes and quicker feature releases.
+# Neden CI/CD Kullanılır?
+### Daha Hızlı Geliştirme Döngüsü:
+Test ve dağıtım gibi tekrarlayan işlemleri otomatikleştirerek, CI/CD geliştiricilerin daha fazla kod yazmaya odaklanmalarını sağlar ve manuel işlemleri azaltır. Bu, daha hızlı düzeltmeler ve daha hızlı özellik dağıtımları ile sonuçlanır.
 
-### Improved Code Quality:
-Automated tests ensure that issues are identified early in the process. As developers integrate code continuously, they receive immediate feedback on the performance of their code. This leads to higher-quality code with fewer issues in production.
+### Geliştirilmiş Kod Kalitesi:
+Otomatik testler, sorunların erken tespit edilmesini sağlar. Geliştiriciler, kodu sürekli entegre ettikçe, kodlarının performansı hakkında anında geri bildirim alırlar. Bu, daha kaliteli ve üretime geçmeden önce daha az sorunlu bir kod sağlar.
 
-### Reduced Human Error:
-Manual processes, especially in testing and deployment, are prone to human error. By automating these processes, CI/CD helps reduce mistakes and ensures a more stable and reliable workflow.
+### İnsan Hatasını Azaltma:
+Manuel işlemler, özellikle test ve dağıtımda, insan hatalarına yatkındır. Bu işlemleri otomatikleştirerek, CI/CD hataları azaltır ve daha stabil ve güvenilir bir iş akışı sağlar.
 
-### Better Collaboration:
-With CI, developers apply smaller, more frequent changes, making collaboration easier and reducing integration conflicts. The continuous feedback loop ensures that everyone on the team is aware of changes, and those changes are integrated quickly.
+### Daha İyi İşbirliği:
+CI ile geliştiriciler daha küçük, daha sık değişiklikler yaparak işbirliğini kolaylaştırır ve entegrasyon çatışmalarını azaltır. Sürekli geri bildirim döngüsü, ekipteki herkesin değişikliklerden haberdar olmasını sağlar ve bu değişiklikler hızla entegre edilir.
 
-### Faster Time to Market:
-Since releases are more frequent and automated, CI/CD helps teams deliver features and improvements to customers faster.
+### Daha Hızlı Pazara Çıkış:
+Yayınlar daha sık ve otomatik olduğundan, CI/CD ekiplerin özellikleri ve iyileştirmeleri müşterilere daha hızlı sunmalarına yardımcı olur.
 
 ----
 
-# CI/CD and GitOps
-GitOps is an operational model that applies CI/CD principles to infrastructure management. In GitOps, configuration and infrastructure are stored in a Git repository, and any changes made in the repository are automatically applied to the infrastructure. Here are the differences between CI/CD and GitOps:
+# CI/CD ve GitOps
+GitOps, CI/CD ilkelerini altyapı yönetimine uygulayan bir operasyonel modeldir. GitOps'ta, yapılandırma ve altyapı bir Git deposunda saklanır ve depoda yapılan her değişiklik otomatik olarak altyapıya uygulanır. İşte CI/CD ile GitOps arasındaki farklar:
 
 ### CI/CD:
-Its focus is on the software lifecycle, automating code integration, testing, and deployment processes. CI/CD tools such as Jenkins, GitLab CI, and CircleCI automate the build, test, and deployment processes for applications.
+Yazılım yaşam döngüsüne odaklanır ve kod entegrasyonu, test ve dağıtım süreçlerini otomatikleştirir. Jenkins, GitLab CI ve CircleCI gibi CI/CD araçları, uygulamalar için derleme, test ve dağıtım süreçlerini otomatikleştirir.
 
 ### GitOps:
-Its focus is on the operations lifecycle. In GitOps, Git repositories are used as the source of truth for infrastructure configuration. With GitOps, operations teams can automatically perform infrastructure updates using Git and ensure that the system's state in the repository matches the live system.
+Operasyonel yaşam döngüsüne odaklanır. GitOps'ta, Git depoları altyapı yapılandırmasının doğruluğu için kaynak olarak kullanılır. GitOps ile operasyon ekipleri, Git kullanarak altyapı güncellemelerini otomatik olarak gerçekleştirebilir ve depodaki sistem durumunun canlı sistemle eşleşmesini sağlar.
 
-K### ey Differences:
-CI/CD is focused on software deployment and ensuring that code is quickly and reliably moved to production.
-GitOps is about managing infrastructure and configuration, using Git as the central point for managing pipelines and system state.
+### Key Differences:
+CI/CD, yazılım dağıtımına odaklanır ve kodun hızla ve güvenilir bir şekilde üretime aktarılmasını sağlar.
+GitOps, altyapı ve yapılandırma yönetimi ile ilgilidir ve Git, pipeline'lar ve sistem durumu yönetimi için merkezi bir nokta olarak kullanılır.
 
-In summary, CI/CD is an essential part of the DevOps process related to software delivery, while GitOps extends these practices to infrastructure management and makes Git the central point of operations and applications.
+Özetle, CI/CD yazılım teslimi ile ilgili DevOps sürecinin temel bir parçasıdır, GitOps ise bu uygulamaları altyapı yönetimine genişletir ve Git'i operasyonlar ve uygulamalar için merkezi bir nokta haline getirir.
 
 [img2]: cicd-gitops.webp (CI/CD)
 ![img2]
 
 ----
 
-# Popular Tools for CI/CD
-There are many tools for implementing CI/CD pipelines. Here are some of the most popular ones:
+# CI/CD İçin Popüler Araçlar
+CI/CD pipeline'larını uygulamak için birçok araç vardır. İşte en popüler olanlardan bazıları:
 
 ### Jenkins
-An open-source automation server for building, testing, and deploying code that supports plugins for integration with various technologies.
+Çeşitli teknolojilerle entegrasyon için eklentiler desteği sunan, kodun derlenmesi, test edilmesi ve dağıtılması için açık kaynaklı bir otomasyon sunucusudur.
 
 ### GitLab CI/CD
-This tool is integrated directly into GitLab repositories and provides an easy platform for automating tests, builds, and deployment pipelines.
+Bu araç, doğrudan GitLab depolarına entegre edilmiştir ve test, derleme ve dağıtım pipeline'larını otomatikleştirmek için kolay bir platform sağlar.
 
 ### CircleCI
-A cloud-based CI/CD tool that automates testing and deployment with a focus on speed and scalability. CircleCI integrates with version control systems like GitHub and Bitbucket.
+Hız ve ölçeklenebilirliğe odaklanarak test ve dağıtımı otomatikleştiren bulut tabanlı bir CI/CD aracıdır. CircleCI, GitHub ve Bitbucket gibi sürüm kontrol sistemleriyle entegre olur.
 
 ### Travis CI
-A cloud-based CI tool that automatically builds and tests code in GitHub repositories, offering easy setup for both open-source and private projects.
+GitHub depolarında otomatik olarak kodu derleyip test eden, açık kaynak ve özel projeler için kolay kurulum sağlayan bulut tabanlı bir CI aracıdır.
 
 ### Azure DevOps
-A Microsoft product that provides a comprehensive set of CI/CD tools, including version control, testing, and release management, with integration support for IDEs and popular services.
+Microsoft'un, sürüm kontrolü, test ve sürüm yönetimi dahil olmak üzere kapsamlı bir CI/CD araç seti sunduğu bir üründür ve IDE'ler ve popüler servislerle entegrasyon desteği sağlar.
 
 ### GitHub Actions
-GitHub’s own CI/CD tool, which allows developers to automate pipelines directly within their GitHub repositories, providing an integrated experience with pull requests and merges.
+GitHub'ın kendi CI/CD aracıdır, geliştiricilerin GitHub depoları içinde doğrudan pipeline'ları otomatikleştirmesine olanak tanır, pull request'ler ve birleştirmelerle entegre bir deneyim sunar.
 
 ### Bamboo
-An automation tool developed by Atlassian that integrates with other Atlassian products like Jira and Bitbucket.
+Atlassian tarafından geliştirilen ve Jira ve Bitbucket gibi diğer Atlassian ürünleriyle entegre olan bir otomasyon aracıdır.
 
 ### TeamCity
-A powerful CI/CD tool from JetBrains that supports integration with multiple version control systems, build tools, and programming languages.
+JetBrains'in güçlü bir CI/CD aracıdır, birden fazla sürüm kontrol sistemi, derleme aracı ve programlama dili ile entegrasyonu destekler.
 
 ### Argo CD
-A tool for continuous deployment in Kubernetes that follows GitOps principles and allows users to deploy applications from a Git repository to Kubernetes.
+Kubernetes'te sürekli dağıtım için bir araçtır, GitOps ilkelerini takip eder ve kullanıcıların Git deposundan Kubernetes'e uygulama dağıtmasına olanak tanır.
 
 ### Spinnaker
-An open-source platform for continuous deployment that helps automate software deployment across multiple cloud providers, supporting platforms like Kubernetes, AWS, and other services.
+Birden fazla bulut sağlayıcısında yazılım dağıtımını otomatikleştirmeye yardımcı olan açık kaynaklı bir sürekli dağıtım platformudur, Kubernetes, AWS ve diğer servisleri destekler.
 
-These tools automate the build, test, and deployment processes, ensuring smooth and error-free software delivery workflows. Using the right CI/CD tools can significantly improve software quality and operations, helping organizations deliver value to their customers faster.
+Bu araçlar, derleme, test ve dağıtım süreçlerini otomatikleştirerek, sorunsuz ve hatasız yazılım teslimat iş akışlarını sağlar. Doğru CI/CD araçlarını kullanmak, yazılım kalitesini ve operasyonları önemli ölçüde iyileştirebilir, böylece organizasyonların müşterilerine daha hızlı değer sunmasına yardımcı olur.
 
+----
+
+[z01]: README.md
+[z02]: README-az.md
+[z03]: README-tr.md
+[z04]: README-fa.md
+
+[1.z01]: https://raw.githubusercontent.com/samadelmakchi/samadelmakchi/main/flag/en.svg (English)
+[1.z02]: https://raw.githubusercontent.com/samadelmakchi/samadelmakchi/main/flag/az.svg (Azərbaycani)
+[1.z03]: https://raw.githubusercontent.com/samadelmakchi/samadelmakchi/main/flag/tr.svg (Türkisch)
+[1.z04]: https://raw.githubusercontent.com/samadelmakchi/samadelmakchi/main/flag/fa.svg (فارسی)
+
+### Translate
+[![1.z01]][z01] [![1.z03]][z03] [![1.z04]][z04] 

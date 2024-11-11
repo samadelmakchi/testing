@@ -89,3 +89,17 @@ GitOps یک مدل عملیاتی است که اصول CI/CD را برای مد�
 
 این ابزارها فرآیند ساخت، تست و استقرار را خودکار می‌کنند و جریان‌های تحویل نرم‌افزار را به شکلی هماهنگ و بدون خطا انجام می‌دهند. استفاده از ابزارهای مناسب CI/CD می‌تواند کیفیت نرم‌افزار و عملیات را به‌طور چشمگیری بهبود دهد و به سازمان‌ها کمک کند که سریع‌تر به مشتریان خود ارزش ارائه دهند.
 
+----
+
+[z01]: README.md
+[z02]: README-az.md
+[z03]: README-tr.md
+[z04]: README-fa.md
+
+[1.z01]: https://raw.githubusercontent.com/samadelmakchi/samadelmakchi/main/flag/en.svg (English)
+[1.z02]: https://raw.githubusercontent.com/samadelmakchi/samadelmakchi/main/flag/az.svg (Azərbaycani)
+[1.z03]: https://raw.githubusercontent.com/samadelmakchi/samadelmakchi/main/flag/tr.svg (Türkisch)
+[1.z04]: https://raw.githubusercontent.com/samadelmakchi/samadelmakchi/main/flag/fa.svg (فارسی)
+
+### Translate
+[![1.z01]][z01] [![1.z02]][z02] [![1.z03]][z03] 

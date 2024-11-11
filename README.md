@@ -42,7 +42,7 @@ Its focus is on the software lifecycle, automating code integration, testing, an
 ### GitOps:
 Its focus is on the operations lifecycle. In GitOps, Git repositories are used as the source of truth for infrastructure configuration. With GitOps, operations teams can automatically perform infrastructure updates using Git and ensure that the system's state in the repository matches the live system.
 
-K### ey Differences:
+### Key Differences:
 CI/CD is focused on software deployment and ensuring that code is quickly and reliably moved to production.
 GitOps is about managing infrastructure and configuration, using Git as the central point for managing pipelines and system state.
 
@@ -88,3 +88,17 @@ An open-source platform for continuous deployment that helps automate software d
 
 These tools automate the build, test, and deployment processes, ensuring smooth and error-free software delivery workflows. Using the right CI/CD tools can significantly improve software quality and operations, helping organizations deliver value to their customers faster.
 
+----
+
+[z01]: README.md
+[z02]: README-az.md
+[z03]: README-tr.md
+[z04]: README-fa.md
+
+[1.z01]: https://raw.githubusercontent.com/samadelmakchi/samadelmakchi/main/flag/en.svg (English)
+[1.z02]: https://raw.githubusercontent.com/samadelmakchi/samadelmakchi/main/flag/az.svg (Azərbaycani)
+[1.z03]: https://raw.githubusercontent.com/samadelmakchi/samadelmakchi/main/flag/tr.svg (Türkisch)
+[1.z04]: https://raw.githubusercontent.com/samadelmakchi/samadelmakchi/main/flag/fa.svg (فارسی)
+
+### Translate
+[![1.z02]][z02] [![1.z03]][z03] [![1.z04]][z04] 
