@@ -1,104 +1,90 @@
-# What is CI/CD?
-CI/CD stands for Continuous Integration and Continuous Delivery (or Continuous Deployment). It is a set of practices and principles in software development aimed at improving the workflow of development and delivering software with higher quality and faster delivery times.
+# CI/CD چیست؟
+CI/CD مخفف یکپارچگی مداوم (Continuous Integration) و تحویل مداوم (Continuous Delivery) یا استقرار مداوم (Continuous Deployment) است. این مجموعه‌ای از شیوه‌ها و اصول در توسعه نرم‌افزار است که هدف آن بهبود جریان کاری توسعه و تحویل نرم‌افزار با کیفیت بالاتر و زمان‌های تحویل سریع‌تر است.
 
-### Continuous Integration (CI):
-CI refers to the automatic integration of code changes from multiple contributors into a shared repository, which is done multiple times a day. Each change is automatically built, tested, and verified, helping to identify issues early in the development cycle.
+### یکپارچگی مداوم (CI):
+CI به معنای ادغام خودکار تغییرات کد از چندین مشارکت‌کننده به یک مخزن مشترک است که چندین بار در روز انجام می‌شود. هر تغییر به‌طور خودکار ساخته، آزمایش و تایید می‌شود، و این امر باعث می‌شود که مشکلات در اوایل چرخه توسعه شناسایی شوند.
 
-### Continuous Delivery (CD):
-CD is the automated process that prepares the code for release. It ensures that the code is always in a deployable state and can be transferred to production at any time. This process includes automated testing and staging to ensure quality and stability before release.
+### تحویل مداوم (CD):
+CD فرآیند خودکاری است که کد را برای انتشار آماده می‌کند. این تضمین می‌کند که کد همیشه در حالت قابل استقرار قرار دارد و می‌تواند در هر زمان به تولید منتقل شود. این فرآیند شامل تست خودکار و مرحله‌بندی برای تضمین کیفیت و پایداری قبل از انتشار است.
 
-### Continuous Deployment (CD):
-This is an advanced stage of CI/CD, where any change that successfully passes automated tests is deployed to production without manual intervention. This approach is particularly used in agile and DevOps environments for faster and more frequent releases of features and fixes.
+### استقرار مداوم (CD):
+این مرحله پیشرفته‌تر از CI/CD است که در آن هر تغییری که آزمایشات خودکار را با موفقیت گذرانده باشد، بدون نیاز به مداخله دستی به تولید منتقل می‌شود. این شیوه به‌ویژه در محیط‌های چابک و DevOps برای انتشار سریع‌تر و مکرر ویژگی‌ها و اصلاحات استفاده می‌شود.
 
 [img1]: cicd.webp (CI/CD)
 ![img1]
 
 ----
 
-# Why Use CI/CD?
-### Faster Development Cycle:
-By automating repetitive tasks such as testing and deployment, CI/CD allows developers to focus more on writing code and spend less time on manual processes. This results in faster fixes and quicker feature releases.
+# چرا باید از CI/CD استفاده کرد؟
 
-### Improved Code Quality:
-Automated tests ensure that issues are identified early in the process. As developers integrate code continuously, they receive immediate feedback on the performance of their code. This leads to higher-quality code with fewer issues in production.
+### چرخه توسعه سریع‌تر:
+با خودکار کردن کارهای تکراری مانند تست و استقرار، CI/CD به توسعه‌دهندگان این امکان را می‌دهد که بیشتر بر نوشتن کد تمرکز کنند و کمتر وقت خود را صرف فرآیندهای دستی نمایند. این باعث می‌شود که اصلاحات سریع‌تر انجام شود و ویژگی‌ها سریع‌تر منتشر شوند.
 
-### Reduced Human Error:
-Manual processes, especially in testing and deployment, are prone to human error. By automating these processes, CI/CD helps reduce mistakes and ensures a more stable and reliable workflow.
+### بهبود کیفیت کد:
+تست‌های خودکار تضمین می‌کنند که مشکلات در مراحل اولیه فرآیند شناسایی شوند. چون توسعه‌دهندگان به‌طور مداوم کد را وارد می‌کنند، بازخورد فوری از عملکرد کد خود دریافت می‌کنند. این باعث می‌شود که کد با کیفیت بالاتر و مشکلات کمتری در محیط تولید داشته باشد.
 
-### Better Collaboration:
-With CI, developers apply smaller, more frequent changes, making collaboration easier and reducing integration conflicts. The continuous feedback loop ensures that everyone on the team is aware of changes, and those changes are integrated quickly.
+### کاهش خطای انسانی:
+فرآیندهای دستی، به‌ویژه در تست و استقرار، مستعد خطای انسانی هستند. با خودکار کردن این فرآیندها، CI/CD به کاهش خطاها و تضمین یک جریان کاری پایدارتر و قابل اعتمادتر کمک می‌کند.
 
-### Faster Time to Market:
-Since releases are more frequent and automated, CI/CD helps teams deliver features and improvements to customers faster.
+### همکاری بهتر:
+با CI، توسعه‌دهندگان تغییرات کوچکتر را بیشتر و سریع‌تر اعمال می‌کنند که این امر همکاری را راحت‌تر می‌کند و منجر به کاهش تعارض‌های ادغام می‌شود. چرخه بازخورد مداوم تضمین می‌کند که همه تیم در جریان تغییرات قرار دارند و تغییرات به سرعت ادغام می‌شوند.
+
+### زمان رسیدن به بازار سریع‌تر:
+از آنجا که انتشارها بیشتر و خودکارتر هستند، CI/CD به تیم‌ها کمک می‌کند که ویژگی‌ها و بهبودها را سریع‌تر به مشتریان تحویل دهند.
 
 ----
 
-# CI/CD and GitOps
-GitOps is an operational model that applies CI/CD principles to infrastructure management. In GitOps, configuration and infrastructure are stored in a Git repository, and any changes made in the repository are automatically applied to the infrastructure. Here are the differences between CI/CD and GitOps:
+# CI/CD و GitOps
+GitOps یک مدل عملیاتی است که اصول CI/CD را برای مدیریت زیرساخت به‌کار می‌برد. در GitOps، پیکربندی و زیرساخت در یک مخزن Git ذخیره می‌شود و هر تغییری که در آن مخزن اعمال می‌شود به‌طور خودکار به زیرساخت اعمال می‌شود. در اینجا تفاوت‌های CI/CD و GitOps آورده شده است:
 
 ### CI/CD:
-Its focus is on the software lifecycle, automating code integration, testing, and deployment processes. CI/CD tools such as Jenkins, GitLab CI, and CircleCI automate the build, test, and deployment processes for applications.
+تمرکز آن بر روی چرخه حیات نرم‌افزار است و به‌طور خودکار فرآیندهای ادغام کد، تست و استقرار را انجام می‌دهد. ابزارهای CI/CD مانند Jenkins، GitLab CI و CircleCI فرآیندهای ساخت، تست و استقرار اپلیکیشن‌ها را خودکار می‌کنند.
 
 ### GitOps:
-Its focus is on the operations lifecycle. In GitOps, Git repositories are used as the source of truth for infrastructure configuration. With GitOps, operations teams can automatically perform infrastructure updates using Git and ensure that the system's state in the repository matches the live system.
+تمرکز آن بر روی چرخه حیات عملیات است. در GitOps، از مخازن Git به‌عنوان منبع حقیقت برای پیکربندی زیرساخت استفاده می‌شود. با GitOps، تیم‌های عملیات می‌توانند با استفاده از Git به‌طور خودکار به‌روزرسانی‌های زیرساخت را انجام دهند و تضمین کنند که وضعیت سیستم در مخزن با سیستم اجرایی هم‌خوانی دارد.
 
-### Key Differences:
-CI/CD is focused on software deployment and ensuring that code is quickly and reliably moved to production.
-GitOps is about managing infrastructure and configuration, using Git as the central point for managing pipelines and system state.
+### تفاوت‌های کلیدی:
+- CI/CD در مورد استقرار نرم‌افزار و تضمین این است که کد به‌سرعت و به‌طور قابل اعتمادی به تولید می‌رسد.
+- GitOps در مورد مدیریت زیرساخت و پیکربندی است و از Git به‌عنوان نقطه مرکزی برای مدیریت پایپ‌لاین‌ها و وضعیت سیستم استفاده می‌کند.
 
-In summary, CI/CD is an essential part of the DevOps process related to software delivery, while GitOps extends these practices to infrastructure management and makes Git the central point of operations and applications.
+به‌طور خلاصه، CI/CD بخشی اساسی از فرآیند DevOps است که به تحویل نرم‌افزار مربوط می‌شود، در حالی که GitOps این شیوه‌ها را به مدیریت زیرساخت گسترش می‌دهد و Git را به نقطه کانونی عملیات و اپلیکیشن تبدیل می‌کند.
 
 [img2]: cicd-gitops.webp (CI/CD)
 ![img2]
 
 ----
 
-# Popular Tools for CI/CD
-There are many tools for implementing CI/CD pipelines. Here are some of the most popular ones:
+# ابزارهای محبوب برای CI/CD
+ابزارهای زیادی برای پیاده‌سازی پایپ‌لاین‌های CI/CD وجود دارند. در اینجا برخی از محبوب‌ترین ابزارها آورده شده است:
 
 ### Jenkins
-An open-source automation server for building, testing, and deploying code that supports plugins for integration with various technologies.
+یک سرور خودکارسازی منبع‌باز برای ساخت، تست و استقرار کد است که از پلاگین‌های مختلف برای ادغام با فناوری‌های مختلف پشتیبانی می‌کند.
 
 ### GitLab CI/CD
-This tool is integrated directly into GitLab repositories and provides an easy platform for automating tests, builds, and deployment pipelines.
+این ابزار مستقیماً در مخازن GitLab ادغام شده است و یک پلتفرم آسان برای خودکارسازی تست‌ها، ساخت‌ها و پایپ‌لاین‌های استقرار فراهم می‌کند.
 
 ### CircleCI
-A cloud-based CI/CD tool that automates testing and deployment with a focus on speed and scalability. CircleCI integrates with version control systems like GitHub and Bitbucket.
+یک ابزار CI/CD ابری است که تست و استقرار را خودکار کرده و تمرکز آن بر سرعت و مقیاس‌پذیری است. CircleCI امکان ادغام با سیستم‌های کنترل نسخه مانند GitHub و Bitbucket را فراهم می‌کند.
 
 ### Travis CI
-A cloud-based CI tool that automatically builds and tests code in GitHub repositories, offering easy setup for both open-source and private projects.
+یک ابزار CI مبتنی بر ابر است که به‌طور خودکار ساخت و تست کد را در مخازن GitHub انجام می‌دهد و برای پروژه‌های متن‌باز و خصوصی راه‌اندازی آسانی دارد.
 
 ### Azure DevOps
-A Microsoft product that provides a comprehensive set of CI/CD tools, including version control, testing, and release management, with integration support for IDEs and popular services.
+یک محصول مایکروسافت که مجموعه‌ای جامع از ابزارهای CI/CD، از جمله کنترل نسخه، تست و مدیریت نسخه‌ها را ارائه می‌دهد و از ادغام با IDEها و سرویس‌های محبوب پشتیبانی می‌کند.
 
 ### GitHub Actions
-GitHub’s own CI/CD tool, which allows developers to automate pipelines directly within their GitHub repositories, providing an integrated experience with pull requests and merges.
+ابزار CI/CD اختصاصی GitHub است که به توسعه‌دهندگان این امکان را می‌دهد تا پایپ‌لاین‌های خود را مستقیماً در مخازن GitHub خود خودکار کنند و تجربه‌ای یکپارچه با درخواست‌های کشش و ادغام‌ها فراهم می‌کند.
 
 ### Bamboo
-An automation tool developed by Atlassian that integrates with other Atlassian products like Jira and Bitbucket.
+ابزاری برای خودکارسازی است که توسط Atlassian توسعه داده شده و با سایر محصولات Atlassian مانند Jira و Bitbucket یکپارچه شده است.
 
 ### TeamCity
-A powerful CI/CD tool from JetBrains that supports integration with multiple version control systems, build tools, and programming languages.
+یک ابزار CI/CD قدرتمند از JetBrains که از ادغام با چندین سیستم کنترل نسخه و ابزار ساخت و زبان‌های مختلف پشتیبانی می‌کند.
 
 ### Argo CD
-A tool for continuous deployment in Kubernetes that follows GitOps principles and allows users to deploy applications from a Git repository to Kubernetes.
+ابزاری برای استقرار مداوم در Kubernetes است که اصول GitOps را دنبال می‌کند و به کاربران این امکان را می‌دهد که اپلیکیشن‌ها را از مخزن Git به Kubernetes استقرار دهند.
 
 ### Spinnaker
-An open-source platform for continuous deployment that helps automate software deployment across multiple cloud providers, supporting platforms like Kubernetes, AWS, and other services.
+یک پلتفرم متن‌باز برای استقرار مداوم است که به خودکارسازی استقرار نرم‌افزار در چندین ارائه‌دهنده‌ی ابری کمک می‌کند و از پلتفرم‌های Kubernetes، AWS و سایر خدمات پشتیبانی می‌کند.
 
-These tools automate the build, test, and deployment processes, ensuring smooth and error-free software delivery workflows. Using the right CI/CD tools can significantly improve software quality and operations, helping organizations deliver value to their customers faster.
-
-----
-
-[z01]: README.md
-[z02]: README-az.md
-[z03]: README-tr.md
-[z04]: README-fa.md
-
-[1.z01]: https://raw.githubusercontent.com/samadelmakchi/samadelmakchi/main/flag/en.svg (English)
-[1.z02]: https://raw.githubusercontent.com/samadelmakchi/samadelmakchi/main/flag/az.svg (Azərbaycani)
-[1.z03]: https://raw.githubusercontent.com/samadelmakchi/samadelmakchi/main/flag/tr.svg (Türkisch)
-[1.z04]: https://raw.githubusercontent.com/samadelmakchi/samadelmakchi/main/flag/fa.svg (فارسی)
-
-### Translate
-[![1.z04]][z04] [![1.z03]][z03] [![1.z02]][z02] 
+این ابزارها فرآیند ساخت، تست و استقرار را خودکار می‌کنند و جریان‌های تحویل نرم‌افزار را به شکلی هماهنگ و بدون خطا انجام می‌دهند. استفاده از ابزارهای مناسب CI/CD می‌تواند کیفیت نرم‌افزار و عملیات را به‌طور چشمگیری بهبود دهد و به سازمان‌ها کمک کند که سریع‌تر به مشتریان خود ارزش ارائه دهند.
